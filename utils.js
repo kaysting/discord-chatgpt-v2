@@ -36,7 +36,7 @@ const adjustImageDimensions = (width, height) => {
         longSide = shortSide * aspectRatio;
     }
     // Return the resized dimensions, keeping width and height identifiers
-    return width > height 
+    return width > height
         ? { width: longSide, height: shortSide }
         : { width: shortSide, height: longSide };
 };
@@ -62,7 +62,7 @@ const countTokensInContentEntry = contentEntry => {
         return countImageTokens(dims.width, dims.height);
     }
     return 0;
-}
+};
 
 const replaceConfigPlaceholders = (text) => {
     for (const placeholder in config.gpt.replacements) {
@@ -70,7 +70,7 @@ const replaceConfigPlaceholders = (text) => {
         text = text.replace(new RegExp(placeholder.replace('\\', '\\\\'), 'g'), replacement);
     }
     return text;
-}
+};
 
 // Determines if a received message is a valid AI prompt
 const isValidInputMsg = msg => {
@@ -136,7 +136,7 @@ const getUserAccessStatus = id => {
 // Get the nickname/name/username of the author of a message
 const getMsgAuthorName = msg => {
     return msg.member?.nickname || msg.author.globalName || msg.author.username;
-}
+};
 
 // Get the nickname/name/username of a user
 const getUserName = (id, guild = null) => {
@@ -144,7 +144,7 @@ const getUserName = (id, guild = null) => {
     const member = guild?.members.cache.get(id);
     const user = bot.users.cache.get(id);
     return member?.nickname || user?.globalName || user?.username || id;
-}
+};
 
 // Get message content with user mentions replaced with their names
 const getSanitizedContent = msg => {
@@ -155,29 +155,29 @@ const getSanitizedContent = msg => {
 };
 
 const streamChatCompletionOpts = {
-    messages: [ {
+    messages: [{
         role: 'system',
         content: ''
     }, {
         role: 'assistant',
-        content: [ {
+        content: [{
             type: 'text', text: ''
-        } ]
+        }]
     }, {
         role: 'user',
-        content: [ {
-            type: 'image_url', 
+        content: [{
+            type: 'image_url',
             image_url: {
                 url: '', detail: 'auto'
             }
-        } ]
-    } ],
-    onChunk: (chunk = '') => {},
-    onFinish: (response = '') => { return response },
-    onError: (error) => { throw new Error(error) },
+        }]
+    }],
+    onChunk: (chunk = '') => { },
+    onFinish: (response = '') => { return response; },
+    onError: (error) => { throw new Error(error); },
     model: config.gpt.model
 };
-const streamChatCompletion = async(opts = streamChatCompletionOpts) => {
+const streamChatCompletion = async (opts = streamChatCompletionOpts) => {
     // Merge opts
     opts = Object.assign({}, streamChatCompletionOpts, opts);
     try {
@@ -222,7 +222,7 @@ const streamChatCompletion = async(opts = streamChatCompletionOpts) => {
                     // Ensure roles aren't repeated successively
                     if (messages[messages.length - 1]?.role == role) {
                         messages[messages.length - 1].content += '\n' + content;
-                    // Ensure system messages don't appear after non-system messages
+                        // Ensure system messages don't appear after non-system messages
                     } else if (messages[messages.length - 1]?.role != 'system' && role == 'system') {
                         continue;
                     } else {
@@ -268,7 +268,7 @@ const streamChatCompletion = async(opts = streamChatCompletionOpts) => {
         opts.onError(error);
         return null;
     }
-}
+};
 
 module.exports = {
     sleep,
@@ -286,4 +286,4 @@ module.exports = {
     getUserName,
     getSanitizedContent,
     streamChatCompletion
-}
+};
