@@ -1,3 +1,5 @@
+## This project is deprecated! Please upgrade to [kaysting/discord-chatgpt-v3](https://github.com/kaysting/discord-chatgpt-v3).
+
 # discord-chatgpt-v2
 A Discord bot allowing users to interact with large-language models from OpenAI, DeepSeek, or Google.
 
